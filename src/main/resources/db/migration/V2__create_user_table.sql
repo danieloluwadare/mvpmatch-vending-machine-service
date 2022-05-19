@@ -2,7 +2,7 @@ CREATE TABLE users (
     id bigint(20) NOT NULL AUTO_INCREMENT,
     username varchar(255) DEFAULT NULL,
     password varchar(100) DEFAULT NULL,
-    deposit decimal(15,2) DEFAULT NULL,
+    deposit int(10) DEFAULT 0,
     role varchar(100) DEFAULT NULL,
     created_at timestamp DEFAULT CURRENT_TIMESTAMP,
     updated_at timestamp DEFAULT CURRENT_TIMESTAMP,

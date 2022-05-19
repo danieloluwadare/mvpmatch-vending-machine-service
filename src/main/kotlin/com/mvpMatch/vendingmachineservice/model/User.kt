@@ -14,7 +14,7 @@ class User {
 
     var username = ""
 
-    var deposit: BigDecimal? = null
+    var deposit: Int = 0
 
     var role = ""
 

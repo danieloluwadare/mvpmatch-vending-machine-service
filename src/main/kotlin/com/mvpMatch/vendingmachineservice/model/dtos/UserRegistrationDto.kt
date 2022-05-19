@@ -1,7 +1,12 @@
 package com.mvpMatch.vendingmachineservice.model.dtos
 
+import javax.validation.constraints.NotBlank
+
 class UserRegistrationDto {
-    val username = ""
-    val password = ""
-    val role = ""
+    @NotBlank(message = "UserName is required")
+    var username = ""
+    @NotBlank(message = "Password is required")
+    var password = ""
+    @NotBlank(message = "Role is required")
+    var role = ""
 }

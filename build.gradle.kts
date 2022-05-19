@@ -1,5 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
+val junitVersion = "5.8.2"
+
 plugins {
 	id("org.springframework.boot") version "2.6.7"
 	id("io.spring.dependency-management") version "1.0.11.RELEASE"
@@ -11,6 +13,7 @@ plugins {
 group = "com.mvpMatch"
 version = "0.0.1-SNAPSHOT"
 java.sourceCompatibility = JavaVersion.VERSION_11
+
 
 configurations {
 	compileOnly {
@@ -31,13 +34,21 @@ dependencies {
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 	implementation("io.jsonwebtoken:jjwt:0.9.1")
+	implementation("org.springframework.boot:spring-boot-starter-validation")
+	implementation("org.junit.jupiter:junit-jupiter:$junitVersion")
+
 
 	compileOnly("org.projectlombok:lombok")
 	runtimeOnly("mysql:mysql-connector-java")
 	annotationProcessor("org.projectlombok:lombok")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.springframework.security:spring-security-test")
-	testImplementation("io.mockk:mockk:1.4.1")
+	testImplementation("io.mockk:mockk:1.12.4")
+
+//	testImplementation("org.junit.jupiter:junit-jupiter-api:$junitVersion")
+//	testImplementation("org.junit.jupiter:junit-jupiter-params:$junitVersion")
+//	runtimeOnly("org.junit.jupiter:junit-jupiter-engine:$junitVersion")
+
 
 }
 
