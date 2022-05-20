@@ -6,4 +6,5 @@ import com.mvpMatch.vendingmachineservice.model.dtos.UserLoginDto
 
 interface AuthenticationService {
     fun authenticate(userLoginDto:UserLoginDto): JwtTokenDto
+    fun getUser(accessToken : String): User
 }

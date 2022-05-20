@@ -4,11 +4,8 @@ import com.mvpMatch.vendingmachineservice.exceptions.AuthenticationException
 import com.mvpMatch.vendingmachineservice.model.User
 import com.mvpMatch.vendingmachineservice.model.dtos.JwtTokenDto
 import com.mvpMatch.vendingmachineservice.model.dtos.UserLoginDto
-import com.mvpMatch.vendingmachineservice.model.dtos.UserRegistrationDto
-import com.mvpMatch.vendingmachineservice.repository.UserRepository
 import io.mockk.every
 import io.mockk.mockk
-import io.mockk.verify
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.springframework.security.crypto.password.PasswordEncoder
@@ -22,7 +19,7 @@ class AuthenticationServiceImplTest{
         user.password="password"
         user.username="mvpmatch"
 
-        val tokenGenerator = mockk<TokenGenerator> {
+        val tokenService = mockk<TokenService> {
             every { generate("password") } returns JwtTokenDto("","","")
         }
         val userService = mockk<UserService> {
@@ -32,7 +29,7 @@ class AuthenticationServiceImplTest{
             every { matches(any(), any()) } returns true
         }
 
-        val authenticationService = AuthenticationServiceImpl(tokenGenerator = tokenGenerator , userService = userService, passwordEncoder=passwordEncoder)
+        val authenticationService = AuthenticationServiceImpl(tokenService = tokenService , userService = userService, passwordEncoder=passwordEncoder)
 
         var exceptionThrown: Boolean = false
         var exception : Exception? = null
@@ -58,7 +55,7 @@ class AuthenticationServiceImplTest{
         user.password="password"
         user.username="mvpmatch"
 
-        val tokenGenerator = mockk<TokenGenerator> {
+        val tokenService = mockk<TokenService> {
             every { generate("password") } returns JwtTokenDto("","","")
         }
         val userService = mockk<UserService> {
@@ -68,7 +65,7 @@ class AuthenticationServiceImplTest{
             every { matches(any(), any()) } returns false
         }
 
-        val authenticationService = AuthenticationServiceImpl(tokenGenerator = tokenGenerator , userService = userService, passwordEncoder=passwordEncoder)
+        val authenticationService = AuthenticationServiceImpl(tokenService = tokenService , userService = userService, passwordEncoder=passwordEncoder)
 
         var exceptionThrown: Boolean = false
         var exception : Exception? = null
