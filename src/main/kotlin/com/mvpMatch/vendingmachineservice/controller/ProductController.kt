@@ -1,7 +1,6 @@
 package com.mvpMatch.vendingmachineservice.controller
 
 import com.mvpMatch.vendingmachineservice.annotations.EnableMvpSecurity
-import com.mvpMatch.vendingmachineservice.enums.ValidationRuleType
 import com.mvpMatch.vendingmachineservice.model.User
 import com.mvpMatch.vendingmachineservice.model.dtos.UserRegistrationDto
 import com.mvpMatch.vendingmachineservice.service.UserService
