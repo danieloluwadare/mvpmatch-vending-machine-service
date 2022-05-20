@@ -8,5 +8,5 @@ import com.mvpMatch.vendingmachineservice.enums.ValidationRuleType
 @MustBeDocumented
 annotation class EnableMvpSecurity(
     val hasAnyAuthority: Array<RoleType>,
-    val hasAnySpecificValidationRule: Array<ValidationRuleType>
+    val hasAnySpecificValidationRules: Array<ValidationRuleType>
 )

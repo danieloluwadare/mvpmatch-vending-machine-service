@@ -1,9 +1,10 @@
-package com.mvpMatch.vendingmachineservice.service
+package com.mvpMatch.vendingmachineservice.authentication
 
 import com.mvpMatch.vendingmachineservice.exceptions.AuthenticationException
 import com.mvpMatch.vendingmachineservice.model.User
 import com.mvpMatch.vendingmachineservice.model.dtos.JwtTokenDto
 import com.mvpMatch.vendingmachineservice.model.dtos.UserLoginDto
+import com.mvpMatch.vendingmachineservice.service.UserService
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 

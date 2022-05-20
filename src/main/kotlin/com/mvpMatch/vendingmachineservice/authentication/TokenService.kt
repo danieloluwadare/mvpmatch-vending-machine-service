@@ -1,4 +1,4 @@
-package com.mvpMatch.vendingmachineservice.service
+package com.mvpMatch.vendingmachineservice.authentication
 
 import com.mvpMatch.vendingmachineservice.model.User
 import com.mvpMatch.vendingmachineservice.model.dtos.JwtTokenDto

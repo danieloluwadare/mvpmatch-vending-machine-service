@@ -1,5 +1,7 @@
 package com.mvpMatch.vendingmachineservice.service
 
+import com.mvpMatch.vendingmachineservice.authentication.AuthenticationServiceImpl
+import com.mvpMatch.vendingmachineservice.authentication.TokenService
 import com.mvpMatch.vendingmachineservice.exceptions.AuthenticationException
 import com.mvpMatch.vendingmachineservice.model.User
 import com.mvpMatch.vendingmachineservice.model.dtos.JwtTokenDto

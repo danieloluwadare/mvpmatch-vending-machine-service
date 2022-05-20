@@ -1,10 +1,9 @@
-package com.mvpMatch.vendingmachineservice.service
+package com.mvpMatch.vendingmachineservice.authentication
 
 import com.mvpMatch.vendingmachineservice.model.User
 import com.mvpMatch.vendingmachineservice.model.dtos.JwtTokenDto
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
-import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
 import java.util.*
 @Service
