@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 
 class UserServiceImplTest{
-    //MethodArgumentNotValidException
 
     @Test
     fun `create invokes userRepository save method`() {
@@ -23,6 +22,7 @@ class UserServiceImplTest{
 
         val userRepository = mockk<UserRepository> {
             every { save(any()) }returns User()
+            every { findByUsername(any()) } returns null
         }
 
         val userServiceImpl = UserServiceImpl(userRepository = userRepository)
