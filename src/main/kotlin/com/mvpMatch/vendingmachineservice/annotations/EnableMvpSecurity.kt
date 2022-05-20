@@ -3,10 +3,10 @@ package com.mvpMatch.vendingmachineservice.annotations
 import com.mvpMatch.vendingmachineservice.enums.RoleType
 import com.mvpMatch.vendingmachineservice.enums.ValidationRuleType
 
-@Target
+@Target(AnnotationTarget.FUNCTION)
 @Retention(AnnotationRetention.RUNTIME)
 @MustBeDocumented
 annotation class EnableMvpSecurity(
-    val hasAnyAuthority: Array<RoleType>,
-    val hasAnySpecificValidationRules: Array<ValidationRuleType>
+    val hasAnyAuthority: Array<RoleType> = [RoleType.DEFAULT],
+    val hasAnySpecificValidationRules: Array<ValidationRuleType> = [ValidationRuleType.DEFAULT]
 )
