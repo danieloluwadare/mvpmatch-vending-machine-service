@@ -18,14 +18,9 @@ import javax.validation.Valid
 class ProductController(private val productService: ProductService, private val userRepository: UserRepository) {
     private val log = LoggerFactory.getLogger(javaClass)
 
-//    @EnableMvpSecurity
-//    @GetMapping("")
-//    fun create(@RequestHeader("Authorization") token:String):ResponseEntity<Any> {
-//        log.info("testing test")
-//        return ResponseEntity.ok("ok")
-//    }
+    @EnableMvpSecurity
     @PostMapping("")
-    fun create(@Valid @RequestBody productDto : ProductDto):ResponseEntity<Product> {
+    fun create(@RequestHeader("Authorization") token : String,@Valid @RequestBody productDto : ProductDto):ResponseEntity<Product> {
         productDto.setPrincipalUser(getUser())
         return ResponseEntity.ok(productService.create(productDto))
     }

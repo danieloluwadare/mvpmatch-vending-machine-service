@@ -28,15 +28,24 @@ class ApiAdviceController(private val mapper : ObjectMapper) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response)
     }
 
-    @ExceptionHandler(UserRegistrationException::class)
-    fun userRegistrationException(ex: UserRegistrationException): ResponseEntity<JsonNode?>? {
+    @ExceptionHandler(AccessTokenAuthenticationException::class)
+    fun accessTokenAuthenticationException(ex: AccessTokenAuthenticationException): ResponseEntity<JsonNode?>? {
         /**
          * {
         "error": "invalid_grant",
         "error_description": "Bad credentials"
         }
          */
-        log.error("ExceptionHandler AuthenticatedException Exception >>> $ex ")
+        log.error("ExceptionHandler accessTokenAuthenticationException Exception >>> $ex ")
+        val response: ObjectNode = mapper.createObjectNode()
+            .putPOJO("error", "invalid access token")
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response)
+    }
+
+    @ExceptionHandler(UserRegistrationException::class)
+    fun userRegistrationException(ex: UserRegistrationException): ResponseEntity<JsonNode?>? {
+
+        log.error("ExceptionHandler userRegistrationException Exception >>> $ex ")
         val response: ObjectNode = mapper.createObjectNode()
             .putPOJO("error", "invalid_credential")
             .putPOJO("error_description", ex.message)
@@ -45,15 +54,18 @@ class ApiAdviceController(private val mapper : ObjectMapper) {
 
     @ExceptionHandler(ProductException::class)
     fun productException(ex: ProductException): ResponseEntity<JsonNode?>? {
-        /**
-         * {
-        "error": "invalid_grant",
-        "error_description": "Bad credentials"
-        }
-         */
-        log.error("ExceptionHandler AuthenticatedException Exception >>> $ex ")
+
+        log.error("ExceptionHandler productException Exception >>> $ex ")
         val response: ObjectNode = mapper.createObjectNode()
-            .putPOJO("error_description", ex.message)
+            .putPOJO("error", ex.message)
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response)
+    }
+
+    @ExceptionHandler(UnAuthorizedUserException::class)
+    fun unAuthorizedUserException(ex: UnAuthorizedUserException): ResponseEntity<JsonNode?>? {
+        log.error("ExceptionHandler UnAuthorizedUserException Exception >>> $ex ")
+        val response: ObjectNode = mapper.createObjectNode()
+            .putPOJO("error", ex.message)
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(response)
     }
 }

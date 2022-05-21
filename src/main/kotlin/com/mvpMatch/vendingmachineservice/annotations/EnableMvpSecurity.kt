@@ -7,6 +7,6 @@ import com.mvpMatch.vendingmachineservice.enums.ValidationRuleType
 @Retention(AnnotationRetention.RUNTIME)
 @MustBeDocumented
 annotation class EnableMvpSecurity(
-    val hasAnyAuthority: Array<RoleType> = [RoleType.DEFAULT],
+    val hasAuthority: RoleType = RoleType.DEFAULT,
     val hasAnySpecificValidationRules: Array<ValidationRuleType> = [ValidationRuleType.DEFAULT]
 )

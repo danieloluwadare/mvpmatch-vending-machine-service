@@ -9,10 +9,10 @@ import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 
 @Service
-class AuthenticationServiceImpl(private val tokenService: TokenService,
-                                private val userService: UserService,
-                                private val passwordEncoder: PasswordEncoder
-) : AuthenticationService {
+class LoginServiceImpl(private val tokenService: TokenService,
+                       private val userService: UserService,
+                       private val passwordEncoder: PasswordEncoder
+) : LoginService {
 
     override fun authenticate(userLoginDto: UserLoginDto): JwtTokenDto {
         val user = userService.findByUsername(userLoginDto.username) ?: throw AuthenticationException("username not found", "")
@@ -26,8 +26,8 @@ class AuthenticationServiceImpl(private val tokenService: TokenService,
         return passwordEncoder.matches(password, actualPassword)
     }
 
-    override fun getUser(accessToken: String): User {
-        val userIdentifier = tokenService.verify(accessToken)
-        return userService.findByUsername(userIdentifier)!!;
-    }
+//     fun getUser(accessToken: String): User {
+//        val userIdentifier = tokenService.verify(accessToken)
+//        return userService.findByUsername(userIdentifier)!!;
+//    }
 }
