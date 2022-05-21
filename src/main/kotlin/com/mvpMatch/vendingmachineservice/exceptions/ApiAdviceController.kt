@@ -13,13 +13,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler
 class ApiAdviceController(private val mapper : ObjectMapper) {
     private val log = LoggerFactory.getLogger(javaClass)
 
-//    @ExceptionHandler(MethodArgumentNotValidException::class)
-//    fun userUnAuthenticatedException(ex: MethodArgumentNotValidException): ResponseEntity<JsonNode?>? {
-//        log.error("ExceptionHandler userUnAuthenticatedException Exception >>> $ex ")
-//        val response: ObjectNode = mapper.createObjectNode().putPOJO("data", ex.message)
-//        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response)
-//    }
-
     @ExceptionHandler(AuthenticationException::class)
     fun authenticationException(ex: AuthenticationException): ResponseEntity<JsonNode?>? {
         /**

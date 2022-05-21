@@ -1,5 +1,8 @@
 package com.mvpMatch.vendingmachineservice.model
 
+import org.hibernate.annotations.CreationTimestamp
+import org.hibernate.annotations.UpdateTimestamp
+import java.util.*
 import javax.persistence.*
 
 @Entity
@@ -17,5 +20,14 @@ class Product {
 
     @JoinColumn(name = "seller_id")
     @ManyToOne(fetch = FetchType.EAGER)
-    var user: User? = null
+    lateinit var user: User
+
+    var deletedAt : Date ?= null
+
+    @CreationTimestamp
+    private var createdAt: Date= Date()
+
+    @UpdateTimestamp
+    private var updatedAt: Date = Date()
+
 }
