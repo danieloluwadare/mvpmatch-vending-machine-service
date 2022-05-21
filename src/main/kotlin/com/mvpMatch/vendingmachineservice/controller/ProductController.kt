@@ -33,11 +33,15 @@ class ProductController(private val productService: ProductService, private val 
     fun get(@PathVariable id: Long ):ResponseEntity<Product> {
         return ResponseEntity.ok(productService.get(id))
     }
-    @PutMapping("/id")
+    @GetMapping("")
+    fun getAll():ResponseEntity<List<Product>> {
+        return ResponseEntity.ok(productService.getAll())
+    }
+    @PutMapping("/{id}")
     fun update(@Valid @RequestBody productDto : ProductDto,@PathVariable id: Long):ResponseEntity<Product> {
         return ResponseEntity.ok(productService.update(productDto,id))
     }
-    @GetMapping("/{id}")
+    @DeleteMapping("/{id}")
     fun delete(@PathVariable id: Long ):ResponseEntity<Any> {
         productService.delete(id)
         return ResponseEntity.ok("successful")

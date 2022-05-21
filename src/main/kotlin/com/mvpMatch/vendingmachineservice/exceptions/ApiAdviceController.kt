@@ -42,4 +42,18 @@ class ApiAdviceController(private val mapper : ObjectMapper) {
             .putPOJO("error_description", ex.message)
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response)
     }
+
+    @ExceptionHandler(ProductException::class)
+    fun productException(ex: ProductException): ResponseEntity<JsonNode?>? {
+        /**
+         * {
+        "error": "invalid_grant",
+        "error_description": "Bad credentials"
+        }
+         */
+        log.error("ExceptionHandler AuthenticatedException Exception >>> $ex ")
+        val response: ObjectNode = mapper.createObjectNode()
+            .putPOJO("error_description", ex.message)
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response)
+    }
 }

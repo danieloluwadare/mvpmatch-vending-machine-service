@@ -3,13 +3,14 @@ package com.mvpMatch.vendingmachineservice.model.dtos
 import com.mvpMatch.vendingmachineservice.authentication.validations.MvpSecurityContext
 import com.mvpMatch.vendingmachineservice.model.User
 import javax.validation.constraints.NotBlank
+import javax.validation.constraints.NotNull
 
 class ProductDto : MvpSecurityContext {
     @NotBlank(message = "productName is required")
     var productName = ""
-    @NotBlank(message = "amountAvailable is required")
+    @NotNull(message = "amountAvailable is required")
     var amountAvailable: Int = 0
-    @NotBlank(message = "cost is required")
+    @NotNull(message = "cost is required")
     var cost: Int = 0
 
     private lateinit var principalSecurityUser : User

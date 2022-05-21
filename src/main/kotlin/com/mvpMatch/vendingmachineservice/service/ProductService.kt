@@ -6,6 +6,9 @@ import com.mvpMatch.vendingmachineservice.model.dtos.ProductDto
 interface ProductService {
     fun create(productDto: ProductDto) :Product
     fun get(id : Long) :Product
+
+    fun getAll() :List<Product>
+
     fun update(productDto: ProductDto, id : Long) :Product
     fun delete(id : Long)
 }

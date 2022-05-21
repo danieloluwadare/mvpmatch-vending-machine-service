@@ -6,6 +6,7 @@ import com.mvpMatch.vendingmachineservice.model.dtos.ProductDto
 import com.mvpMatch.vendingmachineservice.repository.ProductRepository
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import java.util.*
 
 @Service
@@ -31,17 +32,21 @@ class ProductServiceImpl(private val productRepository: ProductRepository) : Pro
         return product.get()
     }
 
+    override fun getAll(): List<Product> {
+        return productRepository.findAll()
+    }
+
     override fun update(productDto: ProductDto, id: Long): Product {
         if(productDto.cost % 5 != 0) throw ProductException("cost must be in multiple of 5","")
         val product = get(id)
         product.productName=productDto.productName
         product.cost=productDto.cost
         product.amountAvailable = productDto.amountAvailable;
-        product.user=productDto.getPrincipalUser()
         return productRepository.save(product)
     }
 
+    @Transactional
     override fun delete(id: Long) {
-        productRepository.updateProductDeletedAt(Date(),id)
+        productRepository.updateDeletedAt(Date(),id)
     }
 }
