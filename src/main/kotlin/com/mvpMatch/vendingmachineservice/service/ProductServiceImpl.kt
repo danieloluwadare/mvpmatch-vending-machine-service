@@ -24,7 +24,7 @@ class ProductServiceImpl(private val productRepository: ProductRepository) : Pro
         return productRepository.save(product)
     }
 
-    override fun get(id: Long): Product {
+    override fun findById(id: Long): Product {
         log.info("get product by id ==> $id")
         val product =  productRepository.findByIdAndDeletedAtIsNull(id)
         if(!product.isPresent) throw ProductException("product with id of $id not found","")
@@ -32,13 +32,13 @@ class ProductServiceImpl(private val productRepository: ProductRepository) : Pro
         return product.get()
     }
 
-    override fun getAll(): List<Product> {
+    override fun findAll(): List<Product> {
         return productRepository.findAll()
     }
 
     override fun update(productDto: ProductDto, id: Long): Product {
         if(productDto.cost % 5 != 0) throw ProductException("cost must be in multiple of 5","")
-        val product = get(id)
+        val product = findById(id)
         product.productName=productDto.productName
         product.cost=productDto.cost
         product.amountAvailable = productDto.amountAvailable;

@@ -1,12 +1,11 @@
 package com.mvpMatch.vendingmachineservice.config
 
-import com.mvpMatch.vendingmachineservice.authentication.validations.SpecificValidationRule
+import com.mvpMatch.vendingmachineservice.authentication.validations.specificValidation.SpecificValidationRule
 import com.mvpMatch.vendingmachineservice.authentication.validations.roleValidations.RoleValidationRule
 import com.mvpMatch.vendingmachineservice.enums.RoleType
 import com.mvpMatch.vendingmachineservice.enums.ValidationRuleType
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import java.util.function.Consumer
 
 @Configuration
 class ValidationRuleConfig {

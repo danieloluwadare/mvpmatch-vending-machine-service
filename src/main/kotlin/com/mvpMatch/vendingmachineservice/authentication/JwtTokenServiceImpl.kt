@@ -10,10 +10,10 @@ import java.util.*
 class JwtTokenServiceImpl : TokenService {
 
     override fun generate(userUniqueIdentifier: String): JwtTokenDto {
-        val expirationDate = 60 * 1 * 1000; //
+        val expirationDate = 60 * 60 * 1000; // 1 hour
         val jwtAccessToken = Jwts.builder()
             .setIssuer(userUniqueIdentifier)
-            .setExpiration(Date(System.currentTimeMillis() + expirationDate)) // 1 day
+            .setExpiration(Date(System.currentTimeMillis() + expirationDate)) //
             .signWith(SignatureAlgorithm.HS512, "secret").compact()
         val jwtTokenDto = JwtTokenDto(jwtAccessToken,"bearer",expirationDate.toString());
         return jwtTokenDto;
