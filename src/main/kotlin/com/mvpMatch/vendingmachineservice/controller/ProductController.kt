@@ -4,12 +4,9 @@ import com.mvpMatch.vendingmachineservice.annotations.EnableMvpSecurity
 import com.mvpMatch.vendingmachineservice.enums.RoleType
 import com.mvpMatch.vendingmachineservice.enums.ValidationRuleType
 import com.mvpMatch.vendingmachineservice.model.Product
-import com.mvpMatch.vendingmachineservice.model.User
 import com.mvpMatch.vendingmachineservice.model.dtos.ProductDto
-import com.mvpMatch.vendingmachineservice.model.dtos.UserRegistrationDto
 import com.mvpMatch.vendingmachineservice.repository.UserRepository
 import com.mvpMatch.vendingmachineservice.service.ProductService
-import com.mvpMatch.vendingmachineservice.service.UserService
 import org.slf4j.LoggerFactory
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*

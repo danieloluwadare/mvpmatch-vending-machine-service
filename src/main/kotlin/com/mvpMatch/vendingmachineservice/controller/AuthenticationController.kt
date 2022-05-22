@@ -1,8 +1,8 @@
 package com.mvpMatch.vendingmachineservice.controller
 
+import com.mvpMatch.vendingmachineservice.authentication.LoginService
 import com.mvpMatch.vendingmachineservice.model.dtos.JwtTokenDto
 import com.mvpMatch.vendingmachineservice.model.dtos.UserLoginDto
-import com.mvpMatch.vendingmachineservice.authentication.LoginService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody

@@ -68,4 +68,14 @@ class ApiAdviceController(private val mapper : ObjectMapper) {
             .putPOJO("error", ex.message)
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(response)
     }
+
+    @ExceptionHandler(UserDepositException::class)
+    fun userDepositException(ex: UserDepositException): ResponseEntity<JsonNode?>? {
+
+        log.error("ExceptionHandler productException Exception >>> $ex ")
+        val response: ObjectNode = mapper.createObjectNode()
+            .putPOJO("error", ex.message)
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response)
+    }
+
 }
