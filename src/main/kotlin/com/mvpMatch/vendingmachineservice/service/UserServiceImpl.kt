@@ -1,15 +1,17 @@
 package com.mvpMatch.vendingmachineservice.service
 
+import com.mvpMatch.vendingmachineservice.events.DepositEvent
 import com.mvpMatch.vendingmachineservice.exceptions.UserDepositException
 import com.mvpMatch.vendingmachineservice.exceptions.UserRegistrationException
 import com.mvpMatch.vendingmachineservice.model.User
 import com.mvpMatch.vendingmachineservice.model.dtos.DepositDto
 import com.mvpMatch.vendingmachineservice.model.dtos.UserRegistrationDto
 import com.mvpMatch.vendingmachineservice.repository.UserRepository
+import org.springframework.context.ApplicationEventPublisher
 import org.springframework.stereotype.Service
 
 @Service
-class UserServiceImpl(private val userRepository: UserRepository) : UserService {
+class UserServiceImpl(private val userRepository: UserRepository, private val applicationEventPublisher: ApplicationEventPublisher) : UserService {
     private val validDepositAmount = hashSetOf(5, 10, 20, 50, 100);
     override fun create(userRegistrationDto: UserRegistrationDto): User {
         val existingUser = findByUsername(userRegistrationDto.username)
@@ -26,8 +28,10 @@ class UserServiceImpl(private val userRepository: UserRepository) : UserService 
     override fun deposit(depositDto: DepositDto): User {
         if(!validDepositAmount.contains(depositDto.amount) )
             throw UserDepositException("deposit amount accepted are 5, 10, 20, 50, 100 cents","")
-        val user = depositDto.getPrincipalUser();
+        var user = depositDto.getPrincipalUser();
         user.deposit = user.deposit + depositDto.amount;
-        return userRepository.save(user)
+        user = userRepository.save(user)
+        applicationEventPublisher.publishEvent(DepositEvent(this, depositDto))
+        return user;
     }
 }
