@@ -8,20 +8,35 @@ import javax.persistence.*
 @Entity
 @Table(name = "products")
 class Order {
+    /**
+     * buyer_id bigint(20) NOT NULL,
+    product_id bigint(20) NOT NULL,
+    amount_of_product int(10) DEFAULT 0,
+    total_cost int(10) DEFAULT 0,
+    reference varchar(255) DEFAULT NULL,
+    status varchar(255) DEFAULT NULL,
+    message varchar(255) DEFAULT NULL,
+    created_at datetime DEFAULT CURRENT_TIMESTAMP,
+    updated_at datetime DEFAULT CURRENT_TIMESTAMP,
+    deleted_at datetime DEFAULT CURRENT_TIMESTAMP,
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long = 0
 
-    var productName = ""
-
-    var amountAvailable: Int = 0
-
-    var cost: Int = 0
-
-    @JoinColumn(name = "seller_id")
+    @JoinColumn(name = "buyer_id")
     @ManyToOne(fetch = FetchType.EAGER)
     lateinit var user: User
 
+    @JoinColumn(name = "product_id")
+    @ManyToOne(fetch = FetchType.EAGER)
+    lateinit var product: Product
+
+    var amountOfProduct: Int = 0
+    var totalCost: Int = 0
+    var reference = ""
+    var status = ""
+    var message = ""
     var deletedAt : Date ?= null
 
     @CreationTimestamp

@@ -1,5 +1,6 @@
 package com.mvpMatch.vendingmachineservice.service
 
+import com.mvpMatch.vendingmachineservice.model.CoinFrequency
 import com.mvpMatch.vendingmachineservice.repository.CoinFrequencyRepository
 import org.springframework.stereotype.Service
 
@@ -9,5 +10,8 @@ class CoinFrequencyServiceImpl(private val coinFrequencyRepository: CoinFrequenc
         val coinFrequency = coinFrequencyRepository.findByValueAndDeletedAtIsNull(value)
         coinFrequency.frequency++
         coinFrequencyRepository.save(coinFrequency)
+    }
+    override fun getCoinsLessThanOrEquals(value: Int): List<CoinFrequency> {
+        return coinFrequencyRepository.findAllByValueLessThanEqualAndFrequencyGreaterThan(value,0)
     }
 }

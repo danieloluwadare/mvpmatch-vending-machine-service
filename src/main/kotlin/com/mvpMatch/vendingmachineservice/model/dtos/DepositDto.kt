@@ -7,7 +7,7 @@ import javax.validation.constraints.NotNull
 
 class DepositDto : MvpSecurityContext{
     @NotNull(message = "amount is required")
-    var amount = 10
+    var amount = 0
 
     private lateinit var principalSecurityUser : User
 
