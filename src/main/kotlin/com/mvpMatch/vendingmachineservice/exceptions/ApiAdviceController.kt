@@ -78,4 +78,16 @@ class ApiAdviceController(private val mapper : ObjectMapper) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response)
     }
 
+    @ExceptionHandler(OrderException::class)
+    fun userDepositException(ex: OrderException): ResponseEntity<JsonNode?>? {
+
+        log.error("ExceptionHandler productException Exception >>> $ex ")
+        log.error("userChange ${ex.userChange.sum()}")
+        val response: ObjectNode = mapper.createObjectNode()
+            .putPOJO("error", ex.message)
+            .putPOJO("refund",true)
+            .putPOJO("change", ex.userChange)
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response)
+    }
+
 }

@@ -6,8 +6,9 @@ import java.util.*
 import javax.persistence.*
 
 @Entity
-@Table(name = "products")
+@Table(name = "orders")
 class Order {
+
     /**
      * buyer_id bigint(20) NOT NULL,
     product_id bigint(20) NOT NULL,
@@ -26,7 +27,7 @@ class Order {
 
     @JoinColumn(name = "buyer_id")
     @ManyToOne(fetch = FetchType.EAGER)
-    lateinit var user: User
+    lateinit var buyer: User
 
     @JoinColumn(name = "product_id")
     @ManyToOne(fetch = FetchType.EAGER)
@@ -37,6 +38,10 @@ class Order {
     var reference = ""
     var status = ""
     var message = ""
+    var userChange = 0
+    var userChangeDenomination = ""
+    var refundedAmount: Int = 0
+
     var deletedAt : Date ?= null
 
     @CreationTimestamp

@@ -11,7 +11,12 @@ class CoinFrequencyServiceImpl(private val coinFrequencyRepository: CoinFrequenc
         coinFrequency.frequency++
         coinFrequencyRepository.save(coinFrequency)
     }
+
+    override fun update(coinFrequencies: List<CoinFrequency>) {
+        coinFrequencyRepository.saveAll(coinFrequencies)
+    }
+
     override fun getCoinsLessThanOrEquals(value: Int): List<CoinFrequency> {
-        return coinFrequencyRepository.findAllByValueLessThanEqualAndFrequencyGreaterThan(value,0)
+        return coinFrequencyRepository.findAllByValueLessThanEqualAndFrequencyGreaterThanOrderByValueDesc(value,0)
     }
 }

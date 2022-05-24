@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository
 @Repository
 interface CoinFrequencyRepository: JpaRepository<CoinFrequency, Long> {
     fun findByValueAndDeletedAtIsNull(id: Int) : CoinFrequency
-    fun findAllByValueLessThanEqualAndFrequencyGreaterThan(value :Int, frequency: Int) : List<CoinFrequency>
+    fun findAllByValueLessThanEqualAndFrequencyGreaterThanOrderByValueDesc(value :Int, frequency: Int) : List<CoinFrequency>
 }

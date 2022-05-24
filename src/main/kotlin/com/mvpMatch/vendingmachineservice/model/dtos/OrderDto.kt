@@ -8,7 +8,7 @@ import javax.validation.constraints.NotNull
 class OrderDto : MvpSecurityContext{
     @NotNull(message = "amount is required")
     var productId = 0
-    @NotBlank(message = "amountOfProduct is required")
+    @NotNull(message = "amountOfProduct is required")
     var amountOfProduct = 0
 
     private lateinit var principalSecurityUser : User

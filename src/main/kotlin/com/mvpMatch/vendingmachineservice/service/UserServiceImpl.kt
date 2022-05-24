@@ -9,6 +9,7 @@ import com.mvpMatch.vendingmachineservice.model.dtos.UserRegistrationDto
 import com.mvpMatch.vendingmachineservice.repository.UserRepository
 import org.springframework.context.ApplicationEventPublisher
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 @Service
 class UserServiceImpl(private val userRepository: UserRepository, private val applicationEventPublisher: ApplicationEventPublisher) : UserService {
@@ -33,5 +34,10 @@ class UserServiceImpl(private val userRepository: UserRepository, private val ap
         user = userRepository.save(user)
         applicationEventPublisher.publishEvent(DepositEvent(this, depositDto))
         return user;
+    }
+
+    @Transactional
+    override fun resetDeposit(userName: String) {
+        userRepository.updateDeposit(0,userName)
     }
 }
