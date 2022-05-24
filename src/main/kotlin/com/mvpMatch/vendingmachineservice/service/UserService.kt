@@ -8,6 +8,7 @@ interface UserService {
     fun create(userRegistrationDto : UserRegistrationDto):User
     fun findByUsername(userName:String) : User?
     fun deposit(depositDto: DepositDto) : User
-    fun resetDeposit(userName: String)
+    fun resetDeposit(userName: String) : User
+    fun resetDeposit(id: Long) : User
 
 }

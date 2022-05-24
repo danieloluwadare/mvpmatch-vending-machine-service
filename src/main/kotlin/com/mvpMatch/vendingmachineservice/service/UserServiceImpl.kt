@@ -37,7 +37,13 @@ class UserServiceImpl(private val userRepository: UserRepository, private val ap
     }
 
     @Transactional
-    override fun resetDeposit(userName: String) {
-        userRepository.updateDeposit(0,userName)
+    override fun resetDeposit(userName: String) :User {
+        userRepository.updateDepositByUsername(0,userName)
+        return findByUsername(userName)!!
+    }
+    @Transactional
+    override fun resetDeposit(id: Long) :User {
+        userRepository.updateDepositByUserId(0,id)
+        return userRepository.findById(id).get()
     }
 }

@@ -4,6 +4,7 @@ import com.mvpMatch.vendingmachineservice.annotations.EnableMvpSecurity
 import com.mvpMatch.vendingmachineservice.enums.RoleType
 import com.mvpMatch.vendingmachineservice.model.User
 import com.mvpMatch.vendingmachineservice.model.dtos.DepositDto
+import com.mvpMatch.vendingmachineservice.model.dtos.ResetDto
 import com.mvpMatch.vendingmachineservice.model.dtos.UserRegistrationDto
 import com.mvpMatch.vendingmachineservice.service.UserService
 import org.springframework.http.ResponseEntity
@@ -27,5 +28,16 @@ class UserController(private val userService: UserService) {
         @Valid @RequestBody depositDto: DepositDto,
     ): ResponseEntity<User> {
         return ResponseEntity.ok(userService.deposit(depositDto))
+    }
+
+    @EnableMvpSecurity(
+        hasAuthority = RoleType.BUYER
+    )
+    @PutMapping("reset")
+    fun resetDeposit(
+        @RequestHeader("Authorization") token: String,
+        @RequestBody resetDto: ResetDto
+    ): ResponseEntity<User> {
+        return ResponseEntity.ok(userService.resetDeposit(resetDto.getPrincipalUser().id))
     }
 }

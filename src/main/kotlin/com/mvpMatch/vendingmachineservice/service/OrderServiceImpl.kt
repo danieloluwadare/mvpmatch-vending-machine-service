@@ -15,10 +15,11 @@ import org.springframework.stereotype.Service
 import java.util.*
 
 @Service
-class OrderServiceImpl(private val productService: ProductService,
-                       private val coinFrequencyService: CoinFrequencyService,
-                       private val orderRepository: OrderRepository,
-                       private val applicationEventPublisher: ApplicationEventPublisher
+class OrderServiceImpl(
+    private val productService: ProductService,
+    private val coinFrequencyService: CoinFrequencyService,
+    private val orderRepository: OrderRepository,
+    private val applicationEventPublisher: ApplicationEventPublisher
 ) : OrderService {
 
     override fun create(orderDto: OrderDto): OrderResponseDto {
@@ -32,15 +33,15 @@ class OrderServiceImpl(private val productService: ProductService,
         // check if there is enough change for the customer
         val userChange = orderDto.getPrincipalUser().deposit - totalCost
         val coinFrequencyList = coinFrequencyService.getCoinsLessThanOrEquals(userChange)
-        val coins = getUserChange(orderDto, userChange, coinFrequencyList,product)
+        val coins = getUserChange(orderDto, userChange, coinFrequencyList, product)
 
         val coinsInStringFormat = StringJoiner(",")
-        coins.forEach {coin->coinsInStringFormat.add(coin.toString())}
+        coins.forEach { coin -> coinsInStringFormat.add(coin.toString()) }
 
         var order = Order()
         order.amountOfProduct = order.amountOfProduct
         order.product = product
-        order.totalCost=totalCost
+        order.totalCost = totalCost
         order.reference = UUID.randomUUID().toString()
         order.buyer = orderDto.getPrincipalUser()
         order.status = OrderStatus.SUCCESS.value
@@ -49,7 +50,7 @@ class OrderServiceImpl(private val productService: ProductService,
         order.userChangeDenomination = coinsInStringFormat.toString()
 
         order = orderRepository.save(order)
-        applicationEventPublisher.publishEvent(OrderInitiatedEvent(this,orderDto,coinFrequencyList))
+        applicationEventPublisher.publishEvent(OrderInitiatedEvent(this, orderDto, coinFrequencyList))
         return OrderUtils.formatResponse(order)
     }
 
@@ -59,7 +60,7 @@ class OrderServiceImpl(private val productService: ProductService,
         product: Product
     ) {
         if (orderDto.getPrincipalUser().deposit < totalCost)
-            initiateException("Insufficient Fund",orderDto, product)
+            initiateException("Insufficient Fund", orderDto, product)
     }
 
     private fun validateProductAvailability(
@@ -75,11 +76,11 @@ class OrderServiceImpl(private val productService: ProductService,
         userChange: Int,
         coinFrequencyList: List<CoinFrequency>,
         product: Product
-    ) : List<Int>{
+    ): List<Int> {
 
-        if(userChange > 0){
-            val coins = OrderUtils.calculate(userChange,coinFrequencyList)
-            if(coins.sum() != userChange)
+        if (userChange > 0) {
+            val coins = OrderUtils.calculate(userChange, coinFrequencyList)
+            if (coins.sum() != userChange)
                 initiateException("Insufficient change", orderDto, product)
             return coins
         }
@@ -90,16 +91,16 @@ class OrderServiceImpl(private val productService: ProductService,
         errorMessage: String,
         orderDto: OrderDto,
         product: Product
-    ){
+    ) {
 
         //generate a order reference
         val reference = UUID.randomUUID().toString()
 
         val refundAmount = orderDto.getPrincipalUser().deposit
         val coinFrequencyList = coinFrequencyService.getCoinsLessThanOrEquals(refundAmount)
-        val coins = OrderUtils.calculate(refundAmount,coinFrequencyList)
+        val coins = OrderUtils.calculate(refundAmount, coinFrequencyList)
         val coinsInStringFormat = StringJoiner(",")
-        coins.forEach {coin->coinsInStringFormat.add(coin.toString())}
+        coins.forEach { coin -> coinsInStringFormat.add(coin.toString()) }
 
         val order = Order()
         order.amountOfProduct = order.amountOfProduct
@@ -113,12 +114,11 @@ class OrderServiceImpl(private val productService: ProductService,
 
         orderRepository.save(order)
 
-        applicationEventPublisher.publishEvent(OrderInitiatedEvent(this,orderDto,coinFrequencyList))
+        applicationEventPublisher.publishEvent(OrderInitiatedEvent(this, orderDto, coinFrequencyList))
 
         // return the users deposit as change
-        throw OrderException(errorMessage,"", coins)
+        throw OrderException(errorMessage, "", coins)
     }
-
 
 
 }

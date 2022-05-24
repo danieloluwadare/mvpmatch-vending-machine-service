@@ -1,30 +1,194 @@
 package com.mvpMatch.vendingmachineservice.service
 
+import com.mvpMatch.vendingmachineservice.enums.OrderStatus
+import com.mvpMatch.vendingmachineservice.exceptions.OrderException
+import com.mvpMatch.vendingmachineservice.exceptions.UserDepositException
 import com.mvpMatch.vendingmachineservice.model.CoinFrequency
-import com.mvpMatch.vendingmachineservice.utils.OrderUtils
+import com.mvpMatch.vendingmachineservice.model.Order
+import com.mvpMatch.vendingmachineservice.model.Product
+import com.mvpMatch.vendingmachineservice.model.User
+import com.mvpMatch.vendingmachineservice.model.dtos.OrderDto
+import com.mvpMatch.vendingmachineservice.repository.OrderRepository
+import io.mockk.every
+import io.mockk.mockk
+import io.mockk.slot
+import io.mockk.verify
+import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
-import java.util.StringJoiner
+import org.springframework.context.ApplicationEventPublisher
 import java.util.stream.Collectors
 
 class OrderServiceImplTest{
 
     @Test
-    fun `testmutablemap` (){
-        val myMap = mutableMapOf <Int,Int>()
-        myMap[3] = 4
-        myMap[1] = 2
-        myMap[2] = 3
+    fun `throw Order exception when product amount is lower than the order made`(){
+        val user = User()
+        user.id = 1
+        user.deposit= 0
 
-        myMap.keys.forEach{key->
-            val v = myMap[key]!! - 1
-            myMap[key] = v
+        val orderDto = OrderDto()
+        orderDto.amountOfProduct=10;
+        orderDto.productId=1
+        orderDto.setPrincipalUser(user)
+
+        val product = Product()
+        product.amountAvailable= 5
+        product.id=1
+
+        val productService = mockk<ProductService>{
+            every { findById(any()) } returns product
+        }
+        val coinFrequencyService = mockk<CoinFrequencyService>(relaxed = true)
+        val orderRepository = mockk<OrderRepository>{
+            every { save(any()) } returns Order()
+        }
+        val applicationEventPublisher = mockk<ApplicationEventPublisher>(){
+            every { publishEvent(any()) } returns Unit
+        }
+        val orderServiceImpl = OrderServiceImpl(productService=productService,coinFrequencyService=coinFrequencyService,orderRepository=orderRepository,applicationEventPublisher=applicationEventPublisher)
+
+        var exceptionThrown: Boolean = false
+        var exception : Exception? = null
+        try{
+            orderServiceImpl.create(orderDto)
+        }catch (ex: Exception){
+            exception = ex
+            exceptionThrown=true
+            print("exception occurred")
         }
 
-        print(myMap)
+        assertTrue(exceptionThrown)
+        assertInstanceOf(OrderException::class.java, exception)
     }
 
     @Test
-    fun `test_change`(){
+    fun `throw Order exception when buyer does not have sufficient fund`(){
+        val user = User()
+        user.id = 1
+        user.deposit= 10
+
+        val orderDto = OrderDto()
+        orderDto.amountOfProduct=10;
+        orderDto.productId=1
+        orderDto.setPrincipalUser(user)
+
+        val product = Product()
+        product.amountAvailable= 5
+        product.id=1
+        product.cost=50
+
+        val productService = mockk<ProductService>{
+            every { findById(any()) } returns product
+        }
+        val coinFrequencyService = mockk<CoinFrequencyService>(relaxed = true)
+        val orderRepository = mockk<OrderRepository>{
+            every { save(any()) } returns Order()
+        }
+        val applicationEventPublisher = mockk<ApplicationEventPublisher>(){
+            every { publishEvent(any()) } returns Unit
+        }
+        val orderServiceImpl = OrderServiceImpl(productService=productService,coinFrequencyService=coinFrequencyService,orderRepository=orderRepository,applicationEventPublisher=applicationEventPublisher)
+
+        var exceptionThrown: Boolean = false
+        var exception : Exception? = null
+        try{
+            orderServiceImpl.create(orderDto)
+        }catch (ex: Exception){
+            exception = ex
+            exceptionThrown=true
+            print("exception occurred")
+        }
+
+        assertTrue(exceptionThrown)
+        assertInstanceOf(OrderException::class.java, exception)
+    }
+    @Test
+    fun `throw Order exception when change is unavailable`(){
+        val user = User()
+        user.id = 1
+        user.deposit= 100
+
+        val orderDto = OrderDto()
+        orderDto.amountOfProduct=2;
+        orderDto.productId=1
+        orderDto.setPrincipalUser(user)
+
+        val product = Product()
+        product.amountAvailable= 5
+        product.id=1
+        product.cost=10
+
+        val productService = mockk<ProductService>{
+            every { findById(any()) } returns product
+        }
+        val coinFrequencyService = mockk<CoinFrequencyService>(relaxed = true)
+        val orderRepository = mockk<OrderRepository>{
+            every { save(any()) } returns Order()
+        }
+        val applicationEventPublisher = mockk<ApplicationEventPublisher>(){
+            every { publishEvent(any()) } returns Unit
+        }
+        val orderServiceImpl = OrderServiceImpl(productService=productService,coinFrequencyService=coinFrequencyService,orderRepository=orderRepository,applicationEventPublisher=applicationEventPublisher)
+
+        var exceptionThrown: Boolean = false
+        var exception : Exception? = null
+        try{
+            orderServiceImpl.create(orderDto)
+        }catch (ex: Exception){
+            exception = ex
+            exceptionThrown=true
+            print("exception occurred")
+        }
+
+        assertTrue(exceptionThrown)
+        assertInstanceOf(OrderException::class.java, exception)
+    }
+
+    @Test
+    fun `test order was created successfully`(){
+        val user = User()
+        user.id = 1
+        user.deposit= 100
+
+        val orderDto = OrderDto()
+        orderDto.amountOfProduct=2;
+        orderDto.productId=1
+        orderDto.setPrincipalUser(user)
+
+        val product = Product()
+        product.amountAvailable= 5
+        product.id=1
+        product.cost=10
+
+        val savedOrder = Order()
+        savedOrder.totalCost=200
+        savedOrder.product=product
+
+
+        val productService = mockk<ProductService>{
+            every { findById(any()) } returns product
+        }
+        val coinFrequencyService = mockk<CoinFrequencyService> {
+            every { getCoinsLessThanOrEquals(any()) } returns getCoinsList()
+        }
+        val orderRepository = mockk<OrderRepository>{
+            every { save(any()) } returns savedOrder
+        }
+        val applicationEventPublisher = mockk<ApplicationEventPublisher>(){
+            every { publishEvent(any()) } returns Unit
+        }
+        val orderServiceImpl = OrderServiceImpl(productService=productService,coinFrequencyService=coinFrequencyService,orderRepository=orderRepository,applicationEventPublisher=applicationEventPublisher)
+
+        val orderResponseDto =orderServiceImpl.create(orderDto)
+
+        val slot = slot<Order>()
+        verify(exactly = 1) {
+            orderRepository.save(capture(slot))
+        }
+        assertEquals(OrderStatus.SUCCESS.value, slot.captured.status)
+        assertEquals(user, slot.captured.buyer)
+    }
+    private fun getCoinsList() : List<CoinFrequency>{
         val list = ArrayList<CoinFrequency>()
 
         var coinFrequency = CoinFrequency()
@@ -49,8 +213,13 @@ class OrderServiceImplTest{
 
         coinFrequency = CoinFrequency()
         coinFrequency.value = 5
-        coinFrequency.frequency=0
+        coinFrequency.frequency=10
         list.add(coinFrequency)
+
+        return list
+    }
+
+    fun `test23`(){
 
 //        val coins = OrderUtils.calcualte(350, list)
 //        val sb = StringJoiner(",")
@@ -63,7 +232,6 @@ class OrderServiceImplTest{
         println("lsit ==> $lsit")
 
     }
-
     private fun calculateChange(change : Int, coinsAvailable : List<CoinFrequency>) : List<Int>{
         val listOfChange = ArrayList<Int>()
         var userChange = change
