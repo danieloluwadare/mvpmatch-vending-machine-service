@@ -16,8 +16,7 @@ class JwtTokenServiceImpl : TokenService {
             .setIssuer(userUniqueIdentifier)
             .setExpiration(Date(System.currentTimeMillis() + expirationDate)) //
             .signWith(SignatureAlgorithm.HS512, "secret").compact()
-        val jwtTokenDto = JwtTokenDto(jwtAccessToken, "bearer", expirationDate.toString())
-        return jwtTokenDto
+        return JwtTokenDto(jwtAccessToken, "bearer", expirationDate.toString())
     }
 
     override fun generate(user: User): JwtTokenDto {

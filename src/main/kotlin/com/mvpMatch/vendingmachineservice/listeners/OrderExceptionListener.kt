@@ -17,7 +17,6 @@ class OrderExceptionListener(
     @EventListener(OrderInitiatedEvent::class)
     fun reportDepositAction(event: OrderInitiatedEvent) {
         log.info(">> begin reportDepositAction")
-//        coinFrequencyService.increaseFrequency(event.depositDto.amount)
         coinFrequencyService.update(event.coinFrequencyList)
         userService.resetDeposit(event.orderDto.getPrincipalUser().username)
         log.info(">> done reportDepositAction")
