@@ -18,4 +18,8 @@ interface UserRepository : JpaRepository<User, Long> {
     @Modifying
     @Query("update User u set u.deposit = :deposit where u.id = :userId")
     fun updateDepositByUserId(@Param("deposit") deposit: Int, @Param("userId") userId: Long)
+
+    @Modifying
+    @Query("update User u set u.sessionActive = :sessionActive where u.id = :userId")
+    fun updateActiveSessionByUserId(@Param("sessionActive") sessionActive: Int, @Param("userId") userId: Long)
 }

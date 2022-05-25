@@ -1,6 +1,6 @@
 package com.mvpMatch.vendingmachineservice.service
 
-import com.mvpMatch.vendingmachineservice.authentication.LoginServiceImpl
+import com.mvpMatch.vendingmachineservice.authentication.OauthServiceImpl
 import com.mvpMatch.vendingmachineservice.authentication.TokenService
 import com.mvpMatch.vendingmachineservice.exceptions.AuthenticationException
 import com.mvpMatch.vendingmachineservice.model.User
@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.springframework.security.crypto.password.PasswordEncoder
 
-class LoginServiceImplTest{
+class OauthServiceImplTest{
 
     @Test
     fun `throw authentication Exception when user can't be found`() {
@@ -31,7 +31,7 @@ class LoginServiceImplTest{
             every { matches(any(), any()) } returns true
         }
 
-        val authenticationService = LoginServiceImpl(tokenService = tokenService , userService = userService, passwordEncoder=passwordEncoder)
+        val authenticationService = OauthServiceImpl(tokenService = tokenService , userService = userService, passwordEncoder=passwordEncoder)
 
         var exceptionThrown: Boolean = false
         var exception : Exception? = null
@@ -67,7 +67,7 @@ class LoginServiceImplTest{
             every { matches(any(), any()) } returns false
         }
 
-        val authenticationService = LoginServiceImpl(tokenService = tokenService , userService = userService, passwordEncoder=passwordEncoder)
+        val authenticationService = OauthServiceImpl(tokenService = tokenService , userService = userService, passwordEncoder=passwordEncoder)
 
         var exceptionThrown: Boolean = false
         var exception : Exception? = null

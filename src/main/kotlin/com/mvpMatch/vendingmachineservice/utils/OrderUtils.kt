@@ -50,7 +50,7 @@ class OrderUtils {
             coins: List<Int>,
             coinsInStringFormat: StringJoiner
         ): Order {
-            var order = Order()
+            val order = Order()
             order.amountOfProduct = order.amountOfProduct
             order.product = product
             order.totalCost = totalCost

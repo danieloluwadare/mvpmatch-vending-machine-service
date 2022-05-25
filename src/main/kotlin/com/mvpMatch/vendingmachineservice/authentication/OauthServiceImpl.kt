@@ -1,6 +1,7 @@
 package com.mvpMatch.vendingmachineservice.authentication
 
 import com.mvpMatch.vendingmachineservice.exceptions.AuthenticationException
+import com.mvpMatch.vendingmachineservice.exceptions.UserSessionActiveException
 import com.mvpMatch.vendingmachineservice.model.dtos.JwtTokenDto
 import com.mvpMatch.vendingmachineservice.model.dtos.UserLoginDto
 import com.mvpMatch.vendingmachineservice.service.UserService
@@ -8,11 +9,11 @@ import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 
 @Service
-class LoginServiceImpl(
+class OauthServiceImpl(
     private val tokenService: TokenService,
     private val userService: UserService,
     private val passwordEncoder: PasswordEncoder
-) : LoginService {
+) : OauthService {
 
     override fun authenticate(userLoginDto: UserLoginDto): JwtTokenDto {
         val user =
@@ -20,6 +21,9 @@ class LoginServiceImpl(
         if (!comparePassword(userLoginDto.password, user.password)) {
             throw AuthenticationException("password mismatch", "")
         }
+        if (user.sessionActive == 1)
+            throw UserSessionActiveException("Session is already active for user ${user.username}", "")
+        userService.activateSession(user.id)
         return tokenService.generate(user.username)
     }
 
@@ -27,8 +31,8 @@ class LoginServiceImpl(
         return passwordEncoder.matches(password, actualPassword)
     }
 
-//     fun getUser(accessToken: String): User {
-//        val userIdentifier = tokenService.verify(accessToken)
-//        return userService.findByUsername(userIdentifier)!!;
-//    }
+    override fun invalidate(id: Long): Map<String, Any> {
+        userService.deActivateSession(id)
+        return mapOf<String, Any>("data" to "Session Invalidated successful")
+    }
 }

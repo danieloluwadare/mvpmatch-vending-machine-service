@@ -10,5 +10,7 @@ interface UserService {
     fun deposit(depositDto: DepositDto): User
     fun resetDeposit(userName: String): User
     fun resetDeposit(id: Long): User
+    fun activateSession(id: Long)
+    fun deActivateSession(id: Long)
 
 }

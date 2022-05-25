@@ -17,6 +17,8 @@ class User {
 
     var role = ""
 
+    var sessionActive = 0
+
     var password = ""
         @JsonIgnore
         get

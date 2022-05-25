@@ -52,4 +52,15 @@ class UserServiceImpl(
         userRepository.updateDepositByUserId(0, id)
         return userRepository.findById(id).get()
     }
+
+    @Transactional
+
+    override fun activateSession(id: Long) {
+        userRepository.updateActiveSessionByUserId(1, id)
+    }
+
+    @Transactional
+    override fun deActivateSession(id: Long) {
+        userRepository.updateActiveSessionByUserId(0, id)
+    }
 }

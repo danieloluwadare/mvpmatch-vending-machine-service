@@ -15,27 +15,22 @@ class ApiAdviceController(private val mapper: ObjectMapper) {
 
     @ExceptionHandler(AuthenticationException::class)
     fun authenticationException(ex: AuthenticationException): ResponseEntity<JsonNode?>? {
-        /**
-         * {
-        "error": "invalid_grant",
-        "error_description": "Bad credentials"
-        }
-         */
         log.error("ExceptionHandler AuthenticatedException Exception >>> $ex ")
         val response: ObjectNode = mapper.createObjectNode()
-            .putPOJO("error", "invalid_credential")
-            .putPOJO("error_description", "Bad credentials")
+            .putPOJO("error", "Invalid credential")
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response)
+    }
+
+    @ExceptionHandler(UserSessionActiveException::class)
+    fun userSessionActiveException(ex: UserSessionActiveException): ResponseEntity<JsonNode?>? {
+        log.error("ExceptionHandler UserSessionActiveException Exception >>> $ex ")
+        val response: ObjectNode = mapper.createObjectNode()
+            .putPOJO("error", "There is already an active session using your account")
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(response)
     }
 
     @ExceptionHandler(AccessTokenAuthenticationException::class)
     fun accessTokenAuthenticationException(ex: AccessTokenAuthenticationException): ResponseEntity<JsonNode?>? {
-        /**
-         * {
-        "error": "invalid_grant",
-        "error_description": "Bad credentials"
-        }
-         */
         log.error("ExceptionHandler accessTokenAuthenticationException Exception >>> $ex ")
         val response: ObjectNode = mapper.createObjectNode()
             .putPOJO("error", "invalid access token")
@@ -47,7 +42,6 @@ class ApiAdviceController(private val mapper: ObjectMapper) {
 
         log.error("ExceptionHandler userRegistrationException Exception >>> $ex ")
         val response: ObjectNode = mapper.createObjectNode()
-            .putPOJO("error", "invalid_credential")
             .putPOJO("error_description", ex.message)
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response)
     }
