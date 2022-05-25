@@ -44,11 +44,7 @@ dependencies {
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.springframework.security:spring-security-test")
 	testImplementation("io.mockk:mockk:1.12.4")
-
-//	testImplementation("org.junit.jupiter:junit-jupiter-api:$junitVersion")
-//	testImplementation("org.junit.jupiter:junit-jupiter-params:$junitVersion")
-//	runtimeOnly("org.junit.jupiter:junit-jupiter-engine:$junitVersion")
-
+	testImplementation("com.h2database:h2:1.4.200")
 
 }
 

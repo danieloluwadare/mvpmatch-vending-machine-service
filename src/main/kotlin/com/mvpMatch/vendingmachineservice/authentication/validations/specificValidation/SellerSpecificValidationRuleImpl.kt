@@ -26,7 +26,7 @@ class SellerSpecificValidationRuleImpl(private val productService: ProductServic
         }
         val  product = productService.findById(productId)
         val user  = computedValues[ComputedValue.USER_ENTITY.name] as User
-        if(user.id != product.user.id)
+        if(user.id != product.seller.id)
             throw UnAuthorizedUserException("operation forbidden","")
     }
 }

@@ -20,7 +20,7 @@ class Product {
 
     @JoinColumn(name = "seller_id")
     @ManyToOne(fetch = FetchType.EAGER)
-    lateinit var user: User
+    lateinit var seller: User
 
     var deletedAt : Date ?= null
 

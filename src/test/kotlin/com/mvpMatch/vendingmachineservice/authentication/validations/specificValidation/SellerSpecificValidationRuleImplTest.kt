@@ -25,7 +25,7 @@ class SellerSpecificValidationRuleImplTest{
 
         val product = Product()
         product.id=2
-        product.user = productSeller
+        product.seller = productSeller
 
         val computedValue:HashMap<String, Any> = HashMap();
         computedValue[ComputedValue.USER_ENTITY.name]=user
@@ -65,7 +65,7 @@ class SellerSpecificValidationRuleImplTest{
 
         val product = Product()
         product.id=2
-        product.user = user
+        product.seller = user
 
         val computedValue:HashMap<String, Any> = HashMap();
         computedValue[ComputedValue.USER_ENTITY.name]=user

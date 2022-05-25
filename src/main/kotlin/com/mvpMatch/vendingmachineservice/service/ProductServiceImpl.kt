@@ -20,7 +20,7 @@ class ProductServiceImpl(private val productRepository: ProductRepository) : Pro
         product.productName=productDto.productName
         product.cost=productDto.cost
         product.amountAvailable = productDto.amountAvailable;
-        product.user=productDto.getPrincipalUser()
+        product.seller=productDto.getPrincipalUser()
         return productRepository.save(product)
     }
 
