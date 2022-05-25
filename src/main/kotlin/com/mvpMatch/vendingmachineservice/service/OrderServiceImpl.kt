@@ -1,10 +1,8 @@
 package com.mvpMatch.vendingmachineservice.service
 
-import com.mvpMatch.vendingmachineservice.enums.OrderStatus
 import com.mvpMatch.vendingmachineservice.events.OrderInitiatedEvent
 import com.mvpMatch.vendingmachineservice.exceptions.OrderException
 import com.mvpMatch.vendingmachineservice.model.CoinFrequency
-import com.mvpMatch.vendingmachineservice.model.Order
 import com.mvpMatch.vendingmachineservice.model.Product
 import com.mvpMatch.vendingmachineservice.model.dtos.OrderDto
 import com.mvpMatch.vendingmachineservice.model.dtos.OrderResponseDto
@@ -38,21 +36,13 @@ class OrderServiceImpl(
         val coinsInStringFormat = StringJoiner(",")
         coins.forEach { coin -> coinsInStringFormat.add(coin.toString()) }
 
-        var order = Order()
-        order.amountOfProduct = order.amountOfProduct
-        order.product = product
-        order.totalCost = totalCost
-        order.reference = UUID.randomUUID().toString()
-        order.buyer = orderDto.getPrincipalUser()
-        order.status = OrderStatus.SUCCESS.value
-        order.message = "$reference ${OrderStatus.SUCCESS.value}"
-        order.userChange = coins.sum()
-        order.userChangeDenomination = coinsInStringFormat.toString()
+        var order = OrderUtils.createOrder(product, totalCost, reference, orderDto, coins, coinsInStringFormat)
 
         order = orderRepository.save(order)
         applicationEventPublisher.publishEvent(OrderInitiatedEvent(this, orderDto, coinFrequencyList))
         return OrderUtils.formatResponse(order)
     }
+
 
     private fun validateUserHasSufficientFund(
         orderDto: OrderDto,
@@ -102,15 +92,7 @@ class OrderServiceImpl(
         val coinsInStringFormat = StringJoiner(",")
         coins.forEach { coin -> coinsInStringFormat.add(coin.toString()) }
 
-        val order = Order()
-        order.amountOfProduct = order.amountOfProduct
-        order.product = product
-        order.reference = reference
-        order.buyer = orderDto.getPrincipalUser()
-        order.status = OrderStatus.FAILED.value
-        order.message = errorMessage
-        order.userChangeDenomination = coinsInStringFormat.toString()
-        order.refundedAmount = coins.sum()
+        var order = OrderUtils.createOrder(product, 0, reference, orderDto, coins, coinsInStringFormat)
 
         orderRepository.save(order)
 

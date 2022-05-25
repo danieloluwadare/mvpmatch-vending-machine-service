@@ -2,7 +2,6 @@ package com.mvpMatch.vendingmachineservice.model
 
 import com.fasterxml.jackson.annotation.JsonIgnore
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
-import java.math.BigDecimal
 import javax.persistence.*
 
 @Entity
@@ -20,7 +19,7 @@ class User {
 
     var password = ""
         @JsonIgnore
-        get() = field
+        get
         set(value) {
             val passwordEncoder = BCryptPasswordEncoder()
             field = passwordEncoder.encode(value)

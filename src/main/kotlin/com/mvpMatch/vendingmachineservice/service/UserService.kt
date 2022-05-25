@@ -5,10 +5,10 @@ import com.mvpMatch.vendingmachineservice.model.dtos.DepositDto
 import com.mvpMatch.vendingmachineservice.model.dtos.UserRegistrationDto
 
 interface UserService {
-    fun create(userRegistrationDto : UserRegistrationDto):User
-    fun findByUsername(userName:String) : User?
-    fun deposit(depositDto: DepositDto) : User
-    fun resetDeposit(userName: String) : User
-    fun resetDeposit(id: Long) : User
+    fun create(userRegistrationDto: UserRegistrationDto): User
+    fun findByUsername(userName: String): User?
+    fun deposit(depositDto: DepositDto): User
+    fun resetDeposit(userName: String): User
+    fun resetDeposit(id: Long): User
 
 }

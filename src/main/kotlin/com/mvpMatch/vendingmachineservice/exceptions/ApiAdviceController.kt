@@ -10,16 +10,16 @@ import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
 
 @ControllerAdvice
-class ApiAdviceController(private val mapper : ObjectMapper) {
+class ApiAdviceController(private val mapper: ObjectMapper) {
     private val log = LoggerFactory.getLogger(javaClass)
 
     @ExceptionHandler(AuthenticationException::class)
     fun authenticationException(ex: AuthenticationException): ResponseEntity<JsonNode?>? {
         /**
          * {
-            "error": "invalid_grant",
-            "error_description": "Bad credentials"
-            }
+        "error": "invalid_grant",
+        "error_description": "Bad credentials"
+        }
          */
         log.error("ExceptionHandler AuthenticatedException Exception >>> $ex ")
         val response: ObjectNode = mapper.createObjectNode()
@@ -85,7 +85,7 @@ class ApiAdviceController(private val mapper : ObjectMapper) {
         log.error("userChange ${ex.userChange.sum()}")
         val response: ObjectNode = mapper.createObjectNode()
             .putPOJO("error", ex.message)
-            .putPOJO("refund",true)
+            .putPOJO("refund", true)
             .putPOJO("change", ex.userChange)
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response)
     }

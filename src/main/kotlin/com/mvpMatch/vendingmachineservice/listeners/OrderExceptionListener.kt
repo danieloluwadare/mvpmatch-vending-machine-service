@@ -8,7 +8,10 @@ import org.springframework.context.event.EventListener
 import org.springframework.stereotype.Component
 
 @Component
-class OrderExceptionListener(private val coinFrequencyService: CoinFrequencyService,private val userService: UserService) {
+class OrderExceptionListener(
+    private val coinFrequencyService: CoinFrequencyService,
+    private val userService: UserService
+) {
     private val log = LoggerFactory.getLogger(javaClass)
 
     @EventListener(OrderInitiatedEvent::class)

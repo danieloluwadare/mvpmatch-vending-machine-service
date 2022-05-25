@@ -14,8 +14,8 @@ class BuyerRoleValidationRuleImpl : RoleValidationRule {
     }
 
     override fun preValidate(method: Method, arguments: Array<Any>, computedValues: HashMap<String, Any>) {
-        val user  = computedValues[ComputedValue.USER_ENTITY.name] as User
-        if(!user.role.equals(RoleType.BUYER.value, true))
-            throw UnAuthorizedUserException("operation forbidden","")
+        val user = computedValues[ComputedValue.USER_ENTITY.name] as User
+        if (!user.role.equals(RoleType.BUYER.value, true))
+            throw UnAuthorizedUserException("operation forbidden", "")
     }
 }

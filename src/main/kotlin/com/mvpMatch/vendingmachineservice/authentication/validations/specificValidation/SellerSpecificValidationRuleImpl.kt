@@ -16,17 +16,17 @@ class SellerSpecificValidationRuleImpl(private val productService: ProductServic
     }
 
     override fun preValidate(method: Method, arguments: Array<Any>, computedValues: HashMap<String, Any>) {
-        var productId : Long = 0
+        var productId: Long = 0
         val parameters = method.parameters
         for (i in parameters.indices) {
             val parameter = parameters[i]
             if (parameter.isAnnotationPresent(PathVariable::class.java)) {
-                productId =arguments[i] as Long
+                productId = arguments[i] as Long
             }
         }
-        val  product = productService.findById(productId)
-        val user  = computedValues[ComputedValue.USER_ENTITY.name] as User
-        if(user.id != product.seller.id)
-            throw UnAuthorizedUserException("operation forbidden","")
+        val product = productService.findById(productId)
+        val user = computedValues[ComputedValue.USER_ENTITY.name] as User
+        if (user.id != product.seller.id)
+            throw UnAuthorizedUserException("operation forbidden", "")
     }
 }

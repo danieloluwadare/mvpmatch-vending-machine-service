@@ -11,11 +11,13 @@ class CoinFrequency {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long = 0
-    var value : Int = 0
-    var frequency : Int = 0
-    var deletedAt : Date ?= null
+    var value: Int = 0
+    var frequency: Int = 0
+    var deletedAt: Date? = null
+
     @CreationTimestamp
-    private var createdAt: Date= Date()
+    private var createdAt: Date = Date()
+
     @UpdateTimestamp
     private var updatedAt: Date = Date()
 

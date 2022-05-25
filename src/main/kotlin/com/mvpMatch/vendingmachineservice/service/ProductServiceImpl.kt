@@ -10,24 +10,24 @@ import org.springframework.transaction.annotation.Transactional
 import java.util.*
 
 @Service
-class ProductServiceImpl(private val productRepository: ProductRepository) : ProductService{
+class ProductServiceImpl(private val productRepository: ProductRepository) : ProductService {
     private val log = LoggerFactory.getLogger(javaClass)
 
     override fun create(productDto: ProductDto): Product {
         log.info("create")
-        if(productDto.cost % 5 != 0) throw ProductException("cost must be in multiple of 5","")
+        if (productDto.cost % 5 != 0) throw ProductException("cost must be in multiple of 5", "")
         val product = Product()
-        product.productName=productDto.productName
-        product.cost=productDto.cost
-        product.amountAvailable = productDto.amountAvailable;
-        product.seller=productDto.getPrincipalUser()
+        product.productName = productDto.productName
+        product.cost = productDto.cost
+        product.amountAvailable = productDto.amountAvailable
+        product.seller = productDto.getPrincipalUser()
         return productRepository.save(product)
     }
 
     override fun findById(id: Long): Product {
         log.info("get product by id ==> $id")
-        val product =  productRepository.findByIdAndDeletedAtIsNull(id)
-        if(!product.isPresent) throw ProductException("product with id of $id not found","")
+        val product = productRepository.findByIdAndDeletedAtIsNull(id)
+        if (!product.isPresent) throw ProductException("product with id of $id not found", "")
         log.info("done  product by id ==> $id")
         return product.get()
     }
@@ -37,16 +37,16 @@ class ProductServiceImpl(private val productRepository: ProductRepository) : Pro
     }
 
     override fun update(productDto: ProductDto, id: Long): Product {
-        if(productDto.cost % 5 != 0) throw ProductException("cost must be in multiple of 5","")
+        if (productDto.cost % 5 != 0) throw ProductException("cost must be in multiple of 5", "")
         val product = findById(id)
-        product.productName=productDto.productName
-        product.cost=productDto.cost
-        product.amountAvailable = productDto.amountAvailable;
+        product.productName = productDto.productName
+        product.cost = productDto.cost
+        product.amountAvailable = productDto.amountAvailable
         return productRepository.save(product)
     }
 
     @Transactional
     override fun delete(id: Long) {
-        productRepository.updateDeletedAt(Date(),id)
+        productRepository.updateDeletedAt(Date(), id)
     }
 }

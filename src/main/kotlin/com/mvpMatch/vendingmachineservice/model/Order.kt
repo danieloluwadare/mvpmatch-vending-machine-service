@@ -42,10 +42,10 @@ class Order {
     var userChangeDenomination = ""
     var refundedAmount: Int = 0
 
-    var deletedAt : Date ?= null
+    var deletedAt: Date? = null
 
     @CreationTimestamp
-    private var createdAt: Date= Date()
+    private var createdAt: Date = Date()
 
     @UpdateTimestamp
     private var updatedAt: Date = Date()

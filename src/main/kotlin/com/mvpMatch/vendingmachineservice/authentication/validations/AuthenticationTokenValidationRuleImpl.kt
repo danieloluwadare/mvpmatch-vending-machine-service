@@ -12,7 +12,10 @@ import org.springframework.web.bind.annotation.RequestHeader
 import java.lang.reflect.Method
 
 @Service
-class AuthenticationTokenValidationRuleImpl (private val tokenService: TokenService, private val userService: UserService): ValidationRule{
+class AuthenticationTokenValidationRuleImpl(
+    private val tokenService: TokenService,
+    private val userService: UserService
+) : ValidationRule {
     private val log = LoggerFactory.getLogger(javaClass)
 
     override fun preValidate(method: Method, arguments: Array<Any>, computedValues: HashMap<String, Any>) {
@@ -25,20 +28,20 @@ class AuthenticationTokenValidationRuleImpl (private val tokenService: TokenServ
             }
             if (parameter.isAnnotationPresent(RequestBody::class.java)) {
                 val requestBody = arguments[i]
-                if(requestBody is MvpSecurityContext){
+                if (requestBody is MvpSecurityContext) {
                     computedValues[ComputedValue.MVP_SECURITY_CONTEXT_REQUEST.name] = requestBody
                 }
             }
         }
         log.info("Bearer Token ==> $bearerToken")
         val accessToken = bearerToken.split(" ")[1]
-        val  userIdentifier :String
+        val userIdentifier: String
         try {
             userIdentifier = tokenService.verify(accessToken)
-            val user = userService.findByUsername(userIdentifier)?:throw UserNotFoundException("User not found","")
-            computedValues[ComputedValue.USER_ENTITY.name]= user
-        }catch (exception : Exception){
-            throw AccessTokenAuthenticationException("access token cannot be validated","")
+            val user = userService.findByUsername(userIdentifier) ?: throw UserNotFoundException("User not found", "")
+            computedValues[ComputedValue.USER_ENTITY.name] = user
+        } catch (exception: Exception) {
+            throw AccessTokenAuthenticationException("access token cannot be validated", "")
         }
 
     }

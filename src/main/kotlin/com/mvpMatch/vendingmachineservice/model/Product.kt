@@ -22,10 +22,10 @@ class Product {
     @ManyToOne(fetch = FetchType.EAGER)
     lateinit var seller: User
 
-    var deletedAt : Date ?= null
+    var deletedAt: Date? = null
 
     @CreationTimestamp
-    private var createdAt: Date= Date()
+    private var createdAt: Date = Date()
 
     @UpdateTimestamp
     private var updatedAt: Date = Date()

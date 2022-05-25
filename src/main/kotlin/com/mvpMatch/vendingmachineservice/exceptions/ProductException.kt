@@ -1,4 +1,3 @@
 package com.mvpMatch.vendingmachineservice.exceptions
 
-class ProductException(message: String, code: String) : BaseException(message, code) {
-}
+class ProductException(message: String, code: String) : BaseException(message, code)

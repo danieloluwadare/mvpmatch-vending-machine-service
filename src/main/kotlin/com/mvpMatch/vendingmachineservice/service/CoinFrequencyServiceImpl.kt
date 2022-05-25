@@ -17,6 +17,6 @@ class CoinFrequencyServiceImpl(private val coinFrequencyRepository: CoinFrequenc
     }
 
     override fun getCoinsLessThanOrEquals(value: Int): List<CoinFrequency> {
-        return coinFrequencyRepository.findAllByValueLessThanEqualAndFrequencyGreaterThanOrderByValueDesc(value,0)
+        return coinFrequencyRepository.findAllByValueLessThanEqualAndFrequencyGreaterThanOrderByValueDesc(value, 0)
     }
 }

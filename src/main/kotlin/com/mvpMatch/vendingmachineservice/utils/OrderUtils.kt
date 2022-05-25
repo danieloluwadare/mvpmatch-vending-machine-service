@@ -1,15 +1,18 @@
 package com.mvpMatch.vendingmachineservice.utils
 
+import com.mvpMatch.vendingmachineservice.enums.OrderStatus
 import com.mvpMatch.vendingmachineservice.model.CoinFrequency
 import com.mvpMatch.vendingmachineservice.model.Order
+import com.mvpMatch.vendingmachineservice.model.Product
 import com.mvpMatch.vendingmachineservice.model.dtos.OrderDto
 import com.mvpMatch.vendingmachineservice.model.dtos.OrderResponseDto
 import org.apache.logging.log4j.util.Strings
+import java.util.*
 import java.util.stream.Collectors
 
 class OrderUtils {
     companion object {
-        fun calculate(change : Int, coinsAvailable : List<CoinFrequency>): List<Int> {
+        fun calculate(change: Int, coinsAvailable: List<CoinFrequency>): List<Int> {
             val listOfChange = ArrayList<Int>()
             var userChange = change
             var iterator = 0
@@ -30,13 +33,34 @@ class OrderUtils {
 
         fun formatResponse(order: Order): OrderResponseDto {
             val response = OrderResponseDto()
-            response.totalCost = order.totalCost;
+            response.totalCost = order.totalCost
             response.product = order.product.productName
-            if(Strings.isNotBlank(order.userChangeDenomination))
+            if (Strings.isNotBlank(order.userChangeDenomination))
                 response.change = order.userChangeDenomination
-                    .split(',').stream().map { coin->Integer.parseInt(coin) }.collect(Collectors.toList())
+                    .split(',').stream().map { coin -> Integer.parseInt(coin) }.collect(Collectors.toList())
 
-            return response;
+            return response
+        }
+
+        fun createOrder(
+            product: Product,
+            totalCost: Int,
+            reference: String,
+            orderDto: OrderDto,
+            coins: List<Int>,
+            coinsInStringFormat: StringJoiner
+        ): Order {
+            var order = Order()
+            order.amountOfProduct = order.amountOfProduct
+            order.product = product
+            order.totalCost = totalCost
+            order.reference = reference
+            order.buyer = orderDto.getPrincipalUser()
+            order.status = OrderStatus.SUCCESS.value
+            order.message = "$reference ${OrderStatus.SUCCESS.value}"
+            order.userChange = coins.sum()
+            order.userChangeDenomination = coinsInStringFormat.toString()
+            return order
         }
 
 

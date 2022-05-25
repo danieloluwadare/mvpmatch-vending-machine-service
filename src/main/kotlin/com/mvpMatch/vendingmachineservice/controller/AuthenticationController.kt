@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController
 import javax.validation.Valid
 
 @RestController
-@RequestMapping("api/v1/oauth","v1/oauth")
+@RequestMapping("api/v1/oauth", "v1/oauth")
 class AuthenticationController(private val loginService: LoginService) {
 
     @PostMapping("token")

@@ -12,13 +12,14 @@ import org.springframework.web.bind.annotation.*
 import javax.validation.Valid
 
 @RestController
-@RequestMapping("api/v1/user","v1/user")
+@RequestMapping("api/v1/user", "v1/user")
 class UserController(private val userService: UserService) {
 
     @PostMapping("")
     fun register(@Valid @RequestBody user: UserRegistrationDto): ResponseEntity<User> {
         return ResponseEntity.ok(this.userService.create(user))
     }
+
     @EnableMvpSecurity(
         hasAuthority = RoleType.BUYER
     )

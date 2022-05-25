@@ -20,9 +20,9 @@ import javax.annotation.Resource
 
 @Aspect
 @Configuration
-class EnableMvpSecurityAspect(@Qualifier("authenticationTokenValidationRuleImpl")private val authenticationTokenValidationRule: ValidationRule) {
-    private lateinit var roleValidationRuleMap : HashMap<RoleType, RoleValidationRule>
-    private lateinit var specificValidationRuleMap : HashMap<ValidationRuleType, SpecificValidationRule>
+class EnableMvpSecurityAspect(@Qualifier("authenticationTokenValidationRuleImpl") private val authenticationTokenValidationRule: ValidationRule) {
+    private lateinit var roleValidationRuleMap: HashMap<RoleType, RoleValidationRule>
+    private lateinit var specificValidationRuleMap: HashMap<ValidationRuleType, SpecificValidationRule>
     private val log = LoggerFactory.getLogger(javaClass)
 
     @Around("@annotation(com.mvpMatch.vendingmachineservice.annotations.EnableMvpSecurity)")
@@ -35,17 +35,18 @@ class EnableMvpSecurityAspect(@Qualifier("authenticationTokenValidationRuleImpl"
         val signature = joinPoint.signature as MethodSignature
         val method = signature.method
         val enableMvpSecurity = method.getAnnotation(EnableMvpSecurity::class.java)
-        authenticationTokenValidationRule.preValidate(method,arguments,computedValues)
-        if(computedValues.containsKey(ComputedValue.MVP_SECURITY_CONTEXT_REQUEST.name)){
-            val mvpSecurityContext  = computedValues[ComputedValue.MVP_SECURITY_CONTEXT_REQUEST.name] as MvpSecurityContext
+        authenticationTokenValidationRule.preValidate(method, arguments, computedValues)
+        if (computedValues.containsKey(ComputedValue.MVP_SECURITY_CONTEXT_REQUEST.name)) {
+            val mvpSecurityContext =
+                computedValues[ComputedValue.MVP_SECURITY_CONTEXT_REQUEST.name] as MvpSecurityContext
             mvpSecurityContext.setPrincipalUser(computedValues[ComputedValue.USER_ENTITY.name] as User)
         }
         val roleType = enableMvpSecurity.hasAuthority
-        roleValidationRuleMap[roleType]?.preValidate(method,arguments,computedValues);
-        val specificRuleTypes = enableMvpSecurity.hasAnySpecificValidationRules;
-        for(specificRuleType in specificRuleTypes){
+        roleValidationRuleMap[roleType]?.preValidate(method, arguments, computedValues)
+        val specificRuleTypes = enableMvpSecurity.hasAnySpecificValidationRules
+        for (specificRuleType in specificRuleTypes) {
             log.info("specific rule validation ==> $specificRuleType")
-            specificValidationRuleMap[specificRuleType]?.preValidate(method,arguments,computedValues)
+            specificValidationRuleMap[specificRuleType]?.preValidate(method, arguments, computedValues)
         }
         return joinPoint.proceed()
     }
