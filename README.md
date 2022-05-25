@@ -26,5 +26,7 @@
 - Once an Order exception is thrown when a user tries to buy a product a refund of the user deposit amount should be returned as change
 
 ### Starting the project
-Run <code>docker-compose up --build</code> to build service and start it on port 5000
+
+- Run <code>gradle clean build</code> to build jar file
+- Run <code>docker-compose up --build</code> to build service and start it on port 5000
 
