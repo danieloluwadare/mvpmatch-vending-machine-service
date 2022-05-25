@@ -22,7 +22,9 @@ class ProductControllerTest{
 
     @Test
     fun `test create product endpoint`(){
-        val token = getAuthenticatedUserToken("daniel","password","seller")
+        val username = "daniel seller"
+
+        val token = getAuthenticatedUserToken(username,"password","seller")
         val headers = HttpHeaders()
         headers.contentType = MediaType.APPLICATION_JSON
         headers["Authorization"] = "Bearer $token"
@@ -51,7 +53,7 @@ class ProductControllerTest{
         assertEquals(10, product?.amountAvailable)
         assertEquals(20, product?.cost)
         assertEquals("Chicken", product?.productName)
-        assertEquals("daniel", product?.seller?.username)
+        assertEquals(username, product?.seller?.username)
 
     }
     private fun getAuthenticatedUserToken(username:String,password:String,role:String): String{

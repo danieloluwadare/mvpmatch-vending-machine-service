@@ -24,7 +24,8 @@ class UserControllerTest{
 
     @Test
     fun `test deposit endpoint`(){
-        val token = getAuthenticatedUser("daniel","password","buyer")
+        val username = "daniel buyer"
+        val token = getAuthenticatedUser(username,"password","buyer")
         val headers = HttpHeaders()
         headers.contentType = MediaType.APPLICATION_JSON
         headers["Authorization"] = "Bearer $token"
@@ -40,7 +41,7 @@ class UserControllerTest{
         println("username  ==>${user?.username}")
 
         assertEquals(50, user?.deposit)
-        assertEquals("daniel", user?.username)
+        assertEquals(username, user?.username)
     }
 
     private fun getAuthenticatedUser(username:String,password:String,role:String): String{

@@ -219,19 +219,6 @@ class OrderServiceImplTest{
         return list
     }
 
-    fun `test23`(){
-
-//        val coins = OrderUtils.calcualte(350, list)
-//        val sb = StringJoiner(",")
-//        coins.forEach { coin->sb.add(coin.toString()) }
-//        println("sb $sb")
-//        println("change ==> $coins")
-//
-        val lsit ="1,2,3".split(',').stream().map { coin->Integer.parseInt(coin) }.collect(
-            Collectors.toList())
-        println("lsit ==> $lsit")
-
-    }
     private fun calculateChange(change : Int, coinsAvailable : List<CoinFrequency>) : List<Int>{
         val listOfChange = ArrayList<Int>()
         var userChange = change
@@ -247,14 +234,6 @@ class OrderServiceImplTest{
             listOfChange.add(highestDenomination.value)
             userChange -= highestDenomination.value
             highestDenomination.frequency--
-
-//            if(highestDenomination.frequency > 0){
-//                sum += highestDenomination.value
-//                listOfChange.add(highestDenomination.value)
-//                userChange -= highestDenomination.value
-//                highestDenomination.frequency--
-//            }
-//            if(highestDenomination.frequency == 0) iterator++
         }
         println("sum ==> $sum")
         println("userChange ==> $userChange")
